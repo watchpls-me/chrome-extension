@@ -17,7 +17,7 @@
             <el-col :span="24">
                 <div class="grid-content bg-purple-light">
                   <el-button v-bind:type="buttonType" v-on:click="shareButtonClicked">{{isStreaming ? "Stop" : "Start"}} Share</el-button>
-                  Status: {{shareStatus}}
+                  Status: {{isStreaming ? "Sharing" : "Not Sharing"}}
                 </div>
             </el-col>
         </el-row>
@@ -29,11 +29,6 @@
 import store from '../../../store'
 
 export default {
-    data() {
-       return({
-          shareStatus: "Not Sharing"
-       })
-    },
     computed: {
       buttonType() {
         return this.$store.state.STREAM_STATUS ? "danger" : "success"
@@ -44,19 +39,9 @@ export default {
     },
     methods: {
       shareButtonClicked: function (event) {
-
         let STREAM_STATUS = this.$store.state.STREAM_STATUS
-
-        chrome.runtime.sendMessage({type: "bglog", obj: "Straeam status " + STREAM_STATUS});
-
-        if(STREAM_STATUS){
-          this.shareStatus = "Not Sharing"
-        }else{
-          this.shareStatus = "Sharing"
-        }
-        
+        chrome.runtime.sendMessage({type: "bglog", obj: "Stream status " + STREAM_STATUS})
         store.dispatch('setStreaming', !STREAM_STATUS)
-
       }
     }
 };
