@@ -4,6 +4,9 @@ export default {
   [types.STREAM_STATUS] (state, payload) {
     state.STREAM_STATUS = payload
   },
+  [types.SHARE_LINK] (state, payload) {
+    state.SHARE_LINK = payload
+  },
   // initialize store from localStorage
   initialiseStore (state) {
     // check if the store exists

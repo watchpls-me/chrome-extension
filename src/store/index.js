@@ -9,7 +9,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    STREAM_STATUS: false
+    STREAM_STATUS: false,
+    SHARE_LINK: '',
   },
   getters,
   mutations,
