@@ -6,9 +6,11 @@
                 <el-col :span="24">
                     <div class="grid-content bg-purple-dark">
                         <div style="margin-top: 15px;">
-                            <el-input placeholder="Share link will appear here" v-model="shareLink">
-                                <el-button slot="append" icon="el-icon-tickets"></el-button>
-                            </el-input>
+                                <el-input ref="streamLink" placeholder="Share link will appear here" :value="shareLink">
+                                    <el-tooltip :disabled="!$store.state.SHARE_LINK" slot="append" :content="tooltip" placement="top">
+                                        <el-button :disabled="!$store.state.SHARE_LINK" icon="el-icon-tickets" @click="copyLink"></el-button>
+                                    </el-tooltip>
+                                </el-input>
                         </div>
                     </div>
                 </el-col>
@@ -32,7 +34,7 @@
 
   export default {
     data: () => ({
-      shareLink: ''
+      tooltip: 'Click to copy link'
     }),
     computed: {
       buttonType () {
@@ -40,20 +42,29 @@
       },
       isStreaming () {
         return this.$store.state.STREAM_STATUS
+      },
+      shareLink () {
+        return this.$store.state.SHARE_LINK
       }
     },
     methods: {
       shareButtonClicked (event) {
-        store.dispatch('setStreaming', !this.$store.state.STREAM_STATUS)
-        chrome.runtime.sendMessage({
-          type: 'bglog',
-          obj: 'Stream status ' + this.$store.state.STREAM_STATUS
-        })
-
-        if (this.$store.state.STREAM_STATUS)
-          chrome.runtime.sendMessage({ type: 'startStream' }, function () {console.log('done')})
+        if (!this.$store.state.STREAM_STATUS)
+          chrome.runtime.sendMessage({ type: 'startStream' }, function (e) {console.log(e)})
         else
           chrome.runtime.sendMessage({ type: 'endStream' }, function () {console.log('done')})
+      },
+      copyLink () {
+        const input = this.$refs.streamLink
+        input.focus()
+        document.execCommand('selectAll')
+        const copied = document.execCommand('copy')
+        if (copied) {
+          this.tooltip = 'Link copied!'
+          setTimeout(() => {
+            this.tooltip = 'Click to copy link'
+          }, 2000)
+        }
       }
     }
   }
