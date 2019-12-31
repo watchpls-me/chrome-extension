@@ -3,11 +3,11 @@ import { randanimal, randanimalSync } from 'randanimal'
 
 import store from './store'
 
-var RTCMultiConnection = require('rtcmulticonnection')
-var connection = new RTCMultiConnection()
+const RTCMultiConnection = require('rtcmulticonnection')
+const connection = new RTCMultiConnection()
 // temporary backend solution
 connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/'
-var shareUrl = 'https://www.webrtc-experiment.com/screen/?s='
+const shareUrl = 'http://watchpls.me/r/'
 
 import * as io from 'socket.io-client'
 window.io = io // needed due to issue within webrtc
