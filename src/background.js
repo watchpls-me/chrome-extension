@@ -181,5 +181,7 @@ function cancelCapture () {
     store.dispatch('setStreaming', !store.state.STREAM_STATUS)
     store.dispatch('setLink', '')
     localStream = null
+    connection.close()
+    connection.closeSocket()
   }
 }
