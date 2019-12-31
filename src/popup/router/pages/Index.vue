@@ -1,6 +1,15 @@
 <template>
     <el-container>
-        <el-header>WATCHPLS</el-header>
+        <el-header>
+            <el-row>
+                <el-col :span="12">
+                    <span>WATCHPLS</span>
+                </el-col>
+                <el-col style="text-align: right; font-size: 12px" :span="12">
+                    <el-button type="primary" icon="el-icon-setting" circle/>
+                </el-col>
+            </el-row>
+        </el-header>
         <el-main>
             <el-row>
                 <el-col :span="24">
