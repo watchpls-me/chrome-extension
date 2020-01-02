@@ -6,7 +6,7 @@ import store from './store'
 const RTCMultiConnection = require('rtcmulticonnection')
 const connection = new RTCMultiConnection()
 // temporary backend solution
-connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/'
+connection.socketURL = 'http://watchpls.me:9001/' // will update ssl soontm
 const shareUrl = 'http://watchpls.me/r/'
 
 import * as io from 'socket.io-client'
@@ -78,12 +78,12 @@ function requestCapture (options) {
         mandatory: {
           chromeMediaSource: 'desktop',
           chromeMediaSourceId: streamId,
-          maxWidth: 1920,
-          maxHeight: 1080,
-          minAspectRatio: getAspectRatio(1920, 1080),
-          maxAspectRatio: getAspectRatio(1920, 1080),
-          minFrameRate: 64,
-          maxFrameRate: 128
+          //maxWidth: 1920,
+          //maxHeight: 1080,
+          //minAspectRatio: getAspectRatio(1920, 1080),
+          //maxAspectRatio: getAspectRatio(1920, 1080),
+          minFrameRate: 30,
+          maxFrameRate: 30
         },
         optional: []
       }
