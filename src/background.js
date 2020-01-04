@@ -12,13 +12,17 @@ const shareUrl = 'https://watchpls.me/r/'
 import * as io from 'socket.io-client'
 window.io = io // needed due to issue within webrtc
 
-
+// sync store to memory
 store.commit('initialiseStore')
 store.subscribe((mutation, state) => {
   localStorage.setItem('store', JSON.stringify(state))
 })
 
-//alert(`Hello ${store.getters.STREAM_STATUS}!`)
+// reset stream variables in case of sync issues
+store.dispatch('setStreaming', false)
+store.dispatch('setLink', '')
+
+
 let desktopCaptureId = null
 let localStream = null
 
@@ -97,6 +101,10 @@ function requestCapture (options) {
 
 async function gotStream (stream) {
   localStream = stream
+  localStream.oninactive = function () {
+    if (localStream && localStream.active === false && store.getters.STREAM_STATUS)
+      cancelCapture()
+  }
   console.log(stream)
 
   connection.autoCloseEntireSession = true
@@ -164,24 +172,24 @@ async function gotStream (stream) {
 }
 
 function getUserMediaError (e) {
+  console.log(e)
   chrome.windows.create({
-    url: 'data:text/html,<h1>getUserMediaError: ' + JSON.stringify(e, null, '<br>') + '</pre>',
+    url: 'data:text/html,<h1>getUserMediaError: ' + e + '</pre>',
     type: 'popup',
     width: screen.width / 2,
     height: 170
   })
 }
 
-// TODO: properly handle stopping capture on all sources
 function cancelCapture () {
   if (desktopCaptureId)
     chrome.desktopCapture.cancelChooseDesktopMedia(desktopCaptureId)
   if (localStream) {
     localStream.stop()
-    store.dispatch('setStreaming', !store.state.STREAM_STATUS)
-    store.dispatch('setLink', '')
     localStream = null
     connection.close()
     connection.closeSocket()
   }
+  store.dispatch('setStreaming', false)
+  store.dispatch('setLink', '')
 }
