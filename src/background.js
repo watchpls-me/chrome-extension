@@ -6,8 +6,8 @@ import store from './store'
 const RTCMultiConnection = require('rtcmulticonnection')
 const connection = new RTCMultiConnection()
 // temporary backend solution
-connection.socketURL = 'http://watchpls.me:9001/' // will update ssl soontm
-const shareUrl = 'http://watchpls.me/r/'
+connection.socketURL = 'https://rtc.watchpls.me/'
+const shareUrl = 'https://watchpls.me/r/'
 
 import * as io from 'socket.io-client'
 window.io = io // needed due to issue within webrtc
