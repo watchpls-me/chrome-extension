@@ -18,6 +18,11 @@ store.subscribe((mutation, state) => {
   localStorage.setItem('store', JSON.stringify(state))
 })
 
+// when local storage updates, sync store
+window.onstorage = () => {
+  store.commit('initialiseStore')
+}
+
 // reset stream variables in case of sync issues
 store.dispatch('setStreaming', false)
 store.dispatch('setLink', '')
@@ -49,14 +54,6 @@ var onMessageListener = function (message, sender, sendResponse) {
 }
 chrome.runtime.onMessage.addListener(onMessageListener)
 
-function getAspectRatio (w, h) {
-  function gcd (a, b) {
-    return (b == 0) ? a : gcd(b, a % b)
-  }
-
-  const r = gcd(w, h)
-  return (w / r) / (h / r)
-}
 
 function requestCapture (options) {
   const sources = ['screen', 'window', 'tab', 'audio']
@@ -82,21 +79,20 @@ function requestCapture (options) {
         mandatory: {
           chromeMediaSource: 'desktop',
           chromeMediaSourceId: streamId,
-          //maxWidth: 1920,
-          //maxHeight: 1080,
-          //minAspectRatio: getAspectRatio(1920, 1080),
-          //maxAspectRatio: getAspectRatio(1920, 1080),
-          minFrameRate: 30,
-          maxFrameRate: 30
+          minFrameRate: store.state.framerate,
+          maxFrameRate: store.state.framerate
         },
         optional: []
       }
     }
 
-    navigator.webkitGetUserMedia(constraints, gotStream, getUserMediaError)
+    // null = no max height (fit screen)
+    if (store.state.resolution)
+      constraints.video.mandatory.maxHeight = store.state.resolution
 
+    // create stream
+    navigator.webkitGetUserMedia(constraints, gotStream, getUserMediaError)
   })
-  console.log('cap id ' + desktopCaptureId)
 }
 
 async function gotStream (stream) {
