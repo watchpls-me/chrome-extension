@@ -7,6 +7,10 @@ export default {
   [types.SHARE_LINK] (state, payload) {
     state.SHARE_LINK = payload
   },
+  [types.SETTINGS] (state, payload) {
+    state.resolution = payload.resolution
+    state.framerate = payload.framerate
+  },
   // initialize store from localStorage
   initialiseStore (state) {
     // check if the store exists

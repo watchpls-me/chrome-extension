@@ -11,6 +11,8 @@ export default new Vuex.Store({
   state: {
     STREAM_STATUS: false,
     SHARE_LINK: '',
+    resolution: null,
+    framerate: 30,
   },
   getters,
   mutations,
