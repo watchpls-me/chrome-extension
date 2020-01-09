@@ -1,7 +1,7 @@
 {
   "name": "watchpls",
   "description": "A quick and easy tab sharing app to watch things with your friends!",
-  "version": null,
+  "version": 0.1,
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",
@@ -21,8 +21,6 @@
     "chrome_style": true
   },
   "permissions": [
-    "desktopCapture",
-    "file://*/*",
-    "tabs"
+    "desktopCapture"
   ]
 }
