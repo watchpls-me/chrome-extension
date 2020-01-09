@@ -1,7 +1,7 @@
 {
   "name": "watchpls",
   "description": "A quick and easy tab sharing app to watch things with your friends!",
-  "version": 0.1,
+  "version": "0.1.0",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",

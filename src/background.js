@@ -184,6 +184,7 @@ function cancelCapture () {
     localStream.stop()
     localStream = null
     connection.close()
+    connection.attachStreams = []
     connection.closeSocket()
   }
   store.dispatch('setStreaming', false)
