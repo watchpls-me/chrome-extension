@@ -9,6 +9,23 @@ const connection = new RTCMultiConnection()
 connection.socketURL = 'https://rtc.watchpls.me/'
 const shareUrl = 'https://watchpls.me/r/'
 
+connection.iceServers = [
+  {
+    urls: [
+      'stun:watchpls.me:3478',
+      'stun:watchpls.me:5349',
+    ]
+  },
+  {
+    urls: [
+      'turn:watchpls.me:3478',
+      'turn:watchpls.me:5349',
+    ],
+    username: 'watchpls',
+    credential: 'pantspooping'
+  }
+]
+
 import * as io from 'socket.io-client'
 window.io = io // needed due to issue within webrtc
 
